@@ -153,8 +153,12 @@ namespace KopiLua
 		  CharPtr buff = new char[MAXSRC];
 		  LuaOChunkID(buff, GetStr(ls.source), MAXSRC);
 		  msg = LuaOPushFString(ls.L, "%s:%d: %s", buff, ls.linenumber, msg);
-		  if (token != 0)
-			LuaOPushFString(ls.L, "%s near " + LUA_QS, msg, TextToken(ls, token));
+          if (token != 0)
+          {
+              CharPtr textToken = TextToken(ls, token);
+              LuaOPushFString(ls.L, "%s near " + LUA_QS, msg,textToken /*TextToken(ls, token)*/);
+              Unity3DIntegration.LogError(msg.ToString() + " near " + textToken.ToString());
+          }
 		  LuaDThrow(ls.L, LUA_ERRSYNTAX);
 		}
 

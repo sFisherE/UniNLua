@@ -21,6 +21,8 @@ namespace KopiLua
 		** (a console window or a log file, for instance).
 		*/
 		private static int LuaBPrint (LuaState L) {
+
+            StringBuilder sb = new StringBuilder();//shengfang
 		  int n = LuaGetTop(L);  /* number of arguments */
 		  int i;
 		  LuaGetGlobal(L, "tostring");
@@ -33,11 +35,15 @@ namespace KopiLua
 			if (s == null)
 			  return LuaLError(L, LUA_QL("tostring") + " must return a string to " +
 								   LUA_QL("print"));
-			if (i > 1) fputs("\t", stdout);
-			fputs(s, stdout);
+            if (i > 1) /*fputs("\t", stdout);*/
+                sb.Append("\t");//shengfang
+            //fputs(s, stdout);
+            sb.Append(s.ToString());
 			LuaPop(L, 1);  /* pop result */
 		  }
-		  Console.Write("\n", stdout);
+          //Console.Write("\n", stdout);
+          //UnityEngine.Debug.Log(sb.ToString());//shengfang
+          Unity3DIntegration.Log(sb.ToString());
 		  return 0;
 		}
 

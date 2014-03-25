@@ -62,7 +62,7 @@ namespace KopiLua
 				buff = "/";
 			}
 			#else
-				CharPtr buff = Directory.GetCurrentDirectory(); 
+            CharPtr buff = Unity3DIntegration.rootPath;// Directory.GetCurrentDirectory(); 
 			#endif
 
 			LuaLGSub(L, LuaToString(L, -1), LUA_EXECDIR, buff);
@@ -384,7 +384,10 @@ namespace KopiLua
 		  while ((path = PushNextTemplate(L, path)) != null) {
 			CharPtr filename;
 			filename = LuaLGSub(L, LuaToString(L, -1), LUA_PATH_MARK, name);
-			LuaRemove(L, -2);  /* remove path template */
+            //强制到该目录下面去查找文件
+            filename = Unity3DIntegration.GetFileFullPath(name.ToString());
+
+            LuaRemove(L, -2);  /* remove path template */
 			if (Readable(filename) != 0)  /* does file exist and is readable? */
 			  return filename;  /* return that file name */
 			LuaPushFString(L, "\n\tno file " + LUA_QS, filename);

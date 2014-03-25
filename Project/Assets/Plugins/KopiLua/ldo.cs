@@ -331,9 +331,11 @@ namespace KopiLua
 		public static int LuaDPreCall (LuaState L, StkId func, int nresults) {
 		  LClosure cl;
 		  ptrdiff_t funcr;
-		  if (!TTIsFunction(func)) /* `func' is not a function? */
-			func = TryFuncTM(L, func);  /* check the `function' tag method */
-
+          if (!TTIsFunction(func)) /* `func' is not a function? */
+          {
+              //Unity3DIntegration.LogError(func.ToString() + " is not function");
+              func = TryFuncTM(L, func);  /* check the `function' tag method */
+          }
 		  funcr = SaveStack(L, func);
 		  cl = CLValue(func).l;
 		  L.ci.savedpc = InstructionPtr.Assign(L.savedpc);
